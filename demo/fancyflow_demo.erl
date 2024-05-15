@@ -1,6 +1,6 @@
 -module(fancyflow_demo).
 -export([sans_pipe/0, pipe/0,
-         sans_maybe/0, maybe/0,
+         sans_maybe/0, may_be/0,
          sans_parallel/0, parallel/0,
          nested/0]).
 
@@ -35,9 +35,9 @@ sans_maybe() ->
             {error, Reason}
     end.
 
--spec maybe() -> {ok, non_neg_integer()} | {error, term()}.
-maybe() ->
-    [maybe](undefined,
+-spec may_be() -> {ok, non_neg_integer()} | {error, term()}.
+may_be() ->
+    [may_be](undefined,
             file:get_cwd(),
             file:read_file(filename:join([_, "demo", "data.txt"])),
             {ok, {byte_size(_), _}}).
@@ -62,7 +62,7 @@ parallel() ->
 nested() ->
     [parallel](
         %% first operation reads ./demo/data.txt
-        [maybe](undefined,
+        [may_be](undefined,
                 file:get_cwd(),
                 file:read_file(filename:join([_, "demo", "data.txt"]))),
         %% second parallel op makes a filename and reads its size if any
@@ -71,7 +71,7 @@ nested() ->
                lists:map(fun string:to_upper/1, _),
                string:join(_, ","),
                %% Maybe the file doesn't exist
-               [maybe](_, % the string from [pipe] is a filename here
+               [may_be](_, % the string from [pipe] is a filename here
                        file:read_file(_),
                        {ok, {byte_size(_), _}})
               )

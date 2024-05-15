@@ -19,10 +19,10 @@ transform({call, Line,
      {remote, Line, {atom, CLine, fancyflow}, {atom, CLine, pipe}},
      [Init, rework_funs(Funs, CLine, create_var())]};
 transform({call, Line,
-           {cons, CLine, {atom, CLine, maybe}, {nil, CLine}},
+           {cons, CLine, {atom, CLine, may_be}, {nil, CLine}},
            [Init | Funs]}) ->
     {call, Line,
-     {remote, Line, {atom, CLine, fancyflow}, {atom, CLine, maybe}},
+     {remote, Line, {atom, CLine, fancyflow}, {atom, CLine, may_be}},
      [Init, rework_funs(Funs, CLine, create_var())]};
 transform({call, Line,
            {cons, CLine, {atom, CLine, parallel}, {nil, CLine}},

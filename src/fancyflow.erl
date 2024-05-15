@@ -1,7 +1,7 @@
 -module(fancyflow).
 
 %% API exports
--export([pipe/2, maybe/2, parallel/1]).
+-export([pipe/2, may_be/2, parallel/1]).
 
 %%====================================================================
 %% API functions
@@ -10,10 +10,10 @@
 pipe(Init, Funs) ->
     lists:foldl(fun(F, State) -> F(State) end, Init, Funs).
 
--spec maybe(State, [fun((State) -> Return)]) -> Return when
+-spec may_be(State, [fun((State) -> Return)]) -> Return when
     State :: any(),
     Return :: {ok, State} | {error, State}.
-maybe(Init, Funs) ->
+may_be(Init, Funs) ->
     SwitchFun = fun(F, State) ->
         case F(State) of
             {ok, NewState} -> NewState;
@@ -44,7 +44,7 @@ futurize(F, Ref, ReplyTo) ->
             {ok, F()}
         catch
             throw:Val -> {ok, Val};
-            error:Reason -> {error, {Reason, erlang:get_stacktrace()}};
+            error:Reason -> {error, {Reason, []}};
             exit:Reason -> {error, Reason}
         end}
     end.
